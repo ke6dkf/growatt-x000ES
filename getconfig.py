@@ -22,9 +22,6 @@ interval = 3600
 
 numinverters = 1
 inverterusbport1 = "/dev/ttyUSB0"
-#not sure yet if the inverters will allow me to poll them over a single usb connection or not
-inverterusbport2 = "/dev/ttyUSB1"
-inverterusbport3 = "/dev/ttyUSB2"
 
 verbose = 0
 
@@ -40,7 +37,9 @@ class Growatt:
         self.name = name
         self.unit = unit
 
+        self.client.connect()
         row = self.client.read_holding_registers(73, unit=self.unit)
+        self.client.disconnect()
         if type(row) is ModbusIOException:
             if verbose: print("CHECK1",row)
             raise row
@@ -62,47 +61,47 @@ class Growatt:
             "FwVersionH": row.registers[9],                             #
             "FwVersionM": row.registers[10],                            #
             "FwVersionH": row.registers[11],                            #
-            "FwVersion2H": row.registers[12],                             #
-            "FwVersion2M": row.registers[13],                            #
-            "FwVersion2H": row.registers[14],                            #
-            "OutputVoltType": row.registers[18],                           #0:208, 1:230, 2:240
-            "OutputFreqType": row.registers[19],                           #0:50hz 1:60hz
-            "OverLoadRestart": row.registers[20],                           #0yes, 1 no, 2switch to uti
-            "OverTempRestart": row.registers[21],                           #0yes, 1 no
-            "BuzzerEN": row.registers[22],                           #0 no,1 yes,
-            "Serno5": row.registers[23],                           #
-            "Serno4": row.registers[24],                           #
-            "Serno3": row.registers[25],                           #
-            "Serno2": row.registers[26],                           #
-            "Serno1": row.registers[27],                           #
-            "MoudleH": row.registers[28],                           #
-            "MoudleL": row.registers[29],                           #P0 lead, 1 lithium, 2 customlead  User 0 no, 1growatt, 2cps, 3haiti M 3kw 5kw, Saging 0 norm/1aging
-            "ComAddress": row.registers[30],                           #1-254
-            "FlashStart": row.registers[31],                           #0001-own, 0100 control board
-            "MaxChargeCurr": row.registers[34],                           #10-130
-            "BulkChargeVolt": float(row.registers[35]) / 10,            #.1v 500-580
-            "FloatChargeVolt": float(row.registers[36]) / 10,            #.1v 500-560
-            "BatLowtoUtiVolt": float(row.registers[37]) / 10,            #.1v 444-514
-            "FloatChargeCurr": float(row.registers[38]) / 10,            #.1a 0-80
-            "BatteryType": row.registers[39],                           #0 lead acid, 1 lithium, 2 customLead
-            "Aging Mode": row.registers[40],                           #0 normal, 1 aging mode
-            "DTC": row.registers[43],                           #&*6
-            "SysYear": row.registers[45],                           #
-            "SysMonth": row.registers[46],                           #
-            "SysDay": row.registers[47],                           #
-            "SysHour": row.registers[48],                           #
-            "SysMin": row.registers[49],                           #
-            "SysSec": row.registers[50],                           #
-            "FWBuild4": row.registers[67],                           #
-            "FWBuild3": row.registers[68],                           #
-            "FWBuild2": row.registers[69],                           #
-            "FWBuild1": row.registers[70],                           #
-            "SysWeekly": row.registers[72],                           #0-6
-            "RateWattH": float(row.registers[76]) / 10,               # 0.1w
-            "RateWattL": float(row.registers[77]) / 10,               # 0.1w
-            "RateVAH": float(row.registers[78]) / 10,               # 0.1w
-            "RateVAL": float(row.registers[79]) / 10,               # 0.1w
-            "Factory": row.registers[80]                           #ODM Info Code
+            "FwVersion2H": row.registers[12],                           #
+            "FwVersion2M": row.registers[13],                           #
+            "FwVersion2H": row.registers[14],                           #
+            "OutputVoltType": row.registers[18],                        # 0:208, 1:230, 2:240
+            "OutputFreqType": row.registers[19],                        # 0:50hz 1:60hz
+            "OverLoadRestart": row.registers[20],                       # 0yes, 1 no, 2switch to uti
+            "OverTempRestart": row.registers[21],                       # 0yes, 1 no
+            "BuzzerEN": row.registers[22],                              # 0 no,1 yes,
+            "Serno5": row.registers[23],                                #
+            "Serno4": row.registers[24],                                #
+            "Serno3": row.registers[25],                                #
+            "Serno2": row.registers[26],                                #
+            "Serno1": row.registers[27],                                #
+            "MoudleH": row.registers[28],                               #
+            "MoudleL": row.registers[29],                               # P0 lead, 1 lithium, 2 customlead  User 0 no, 1growatt, 2cps, 3haiti M 3kw 5kw, Saging 0 norm/1aging
+            "ComAddress": row.registers[30],                            # 1-254
+            "FlashStart": row.registers[31],                            # 0001-own, 0100 control board
+            "MaxChargeCurr": row.registers[34],                         # 10-130
+            "BulkChargeVolt": float(row.registers[35]) / 10,            # .1v 500-580
+            "FloatChargeVolt": float(row.registers[36]) / 10,           # .1v 500-560
+            "BatLowtoUtiVolt": float(row.registers[37]) / 10,           # .1v 444-514
+            "FloatChargeCurr": float(row.registers[38]) / 10,           # .1a 0-80
+            "BatteryType": row.registers[39],                           # 0 lead acid, 1 lithium, 2 customLead
+            "Aging Mode": row.registers[40],                            # 0 normal, 1 aging mode
+            "DTC": row.registers[43],                                   # &*6
+            "SysYear": row.registers[45],                               #
+            "SysMonth": row.registers[46],                              #
+            "SysDay": row.registers[47],                                #
+            "SysHour": row.registers[48],                               #
+            "SysMin": row.registers[49],                                #
+            "SysSec": row.registers[50],                                #
+            "FWBuild4": row.registers[67],                              #
+            "FWBuild3": row.registers[68],                              #
+            "FWBuild2": row.registers[69],                              #
+            "FWBuild1": row.registers[70],                              #
+            "SysWeekly": row.registers[72],                             # 0-6
+            "RateWattH": float(row.registers[76]) / 10,                 # 0.1w
+            "RateWattL": float(row.registers[77]) / 10,                 # 0.1w
+            "RateVAH": float(row.registers[78]) / 10,                   # 0.1w
+            "RateVAL": float(row.registers[79]) / 10,                   # 0.1w
+            "Factory": row.registers[80]                                # ODM Info Code
         }
         print(info)
         return info
