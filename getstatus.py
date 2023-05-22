@@ -205,7 +205,7 @@ for i in range(numinverters):
   unit=i+1
   name = "Growatt"+str(unit)
   measurement=influxmeasurement+str(unit)
-  #print("Name ",name," unit is ",unit," measurement is ",measurement)
+  print("Name ",name," unit is ",unit," measurement is ",measurement)
   growatt = Growatt(client, name, unit)
   inverters.append({
     'growatt': growatt,
@@ -224,14 +224,16 @@ while True:
             if info is None:
                 continue
 
-            if verbose: print("Collecting data point")
+            if verbose: print("CHECK4")
             points = [{
                 'time': int(now),
                 'measurement': inverter['measurement'],
                 "fields": info
             }]
-            print(points)
-            print()
+            if verbose: print("CHECK5")
+
+            if not influx.write_points(points, time_precision='s'):
+                print("Failed to write to DB!")
         except Exception as err:
             if verbose: print("ERRORHERE1")
             print(err)
