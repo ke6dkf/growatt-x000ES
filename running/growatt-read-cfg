@@ -11,7 +11,6 @@ from pymodbus.exceptions import ModbusIOException
 from pymodbus.client.sync import ModbusSerialClient as ModbusClient
 from influxdb import InfluxDBClient
 
-
 influxhost = "localhost"
 influxport = "8086"
 influxdbname = "growattconfig"
@@ -23,9 +22,6 @@ interval = 3600
 
 numinverters = 1
 inverterusbport1 = "/dev/ttyUSB0"
-#not sure yet if the inverters will allow me to poll them over a single usb connection or not
-#inverterusbport2 = "/dev/ttyUSB1"
-#inverterusbport3 = "/dev/ttyUSB2"
 
 verbose = 0
 
