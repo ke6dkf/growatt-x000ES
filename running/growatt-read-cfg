@@ -11,8 +11,7 @@ from pymodbus.exceptions import ModbusIOException
 from pymodbus.client.sync import ModbusSerialClient as ModbusClient
 from influxdb import InfluxDBClient
 
-#influxhost = "127.0.0.1"
-#influxhost = "superpi01.ke6dkf.net"
+
 influxhost = "localhost"
 influxport = "8086"
 influxdbname = "growattconfig"
