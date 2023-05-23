@@ -163,7 +163,6 @@ class Growatt:
         if gwinfodump: print(info)
         return info
 
-# Do some shit
 
 print("Establishing connection to Influx..", end='')
 try:
@@ -173,15 +172,6 @@ except:
   exit()
 else:
   print("Done!")
-
-#print("Creating Influx Database ",influxdbname," ..", end="")
-#try:
-#    influx.create_database(influxdbname)
-#except:
-#  print("Failed")
-#  exit()
-#else:
-#  print("Done!")
 
 print("Connecting to Inverter..", end="")
 try:
